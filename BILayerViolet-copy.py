@@ -983,7 +983,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 175, 742))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(-7, 0, 175, 851))
         self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
         self.verticalLayout_25 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_3)
         self.verticalLayout_25.setContentsMargins(2, 2, 2, 2)
@@ -1017,6 +1017,79 @@ class Ui_MainWindow(object):
 "    }")
         self.SelectDatelabel.setObjectName("SelectDatelabel")
         self.verticalLayout_29.addWidget(self.SelectDatelabel)
+        self.widget_3 = QtWidgets.QWidget(self.widget_32)
+        self.widget_3.setObjectName("widget_3")
+        self.verticalLayout_44 = QtWidgets.QVBoxLayout(self.widget_3)
+        self.verticalLayout_44.setContentsMargins(2, 2, 2, 2)
+        self.verticalLayout_44.setSpacing(2)
+        self.verticalLayout_44.setObjectName("verticalLayout_44")
+        self.scrollArea_4 = QtWidgets.QScrollArea(self.widget_3)
+        self.scrollArea_4.setStyleSheet("QScrollArea{\n"
+"    border-style:none;\n"
+"}\n"
+"QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background-color: rgb(42, 38, 62); /* Set your desired background color */\n"
+"    width: 10px; /* Set the width of the vertical scrollbar */\n"
+"    margin: 0px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical {\n"
+"    background-color: rgb(12, 54, 108); /* Set the background color of the scrollbar handle */\n"
+"    min-height: 20px; /* Set the minimum height of the scrollbar handle */\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+"    background-color: transparent;\n"
+"}\n"
+"\n"
+"QScrollBar:horizontal {\n"
+"    border: none;\n"
+"    background-color: #F0F0F0; /* Set your desired background color */\n"
+"    height: 10px; /* Set the height of the horizontal scrollbar */\n"
+"    margin: 0px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:horizontal {\n"
+"    background-color: rgb(73, 66, 108); /* Set the background color of the scrollbar handle */\n"
+"    min-width: 20px; /* Set the minimum width of the scrollbar handle */\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,\n"
+"QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {\n"
+"    background-color: transparent;\n"
+"}")
+        self.scrollArea_4.setWidgetResizable(True)
+        self.scrollArea_4.setObjectName("scrollArea_4")
+        self.scrollAreaWidgetContents_8 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_8.setGeometry(QtCore.QRect(0, 0, 119, 206))
+        self.scrollAreaWidgetContents_8.setObjectName("scrollAreaWidgetContents_8")
+        self.verticalLayout_45 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_8)
+        self.verticalLayout_45.setContentsMargins(2, 2, 2, 2)
+        self.verticalLayout_45.setSpacing(2)
+        self.verticalLayout_45.setObjectName("verticalLayout_45")
+        self.radioButton = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_8)
+        self.radioButton.setObjectName("radioButton")
+        self.verticalLayout_45.addWidget(self.radioButton)
+        self.radioButton_4 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_8)
+        self.radioButton_4.setObjectName("radioButton_4")
+        self.verticalLayout_45.addWidget(self.radioButton_4)
+        self.radioButton_5 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_8)
+        self.radioButton_5.setObjectName("radioButton_5")
+        self.verticalLayout_45.addWidget(self.radioButton_5)
+        self.radioButton_3 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_8)
+        self.radioButton_3.setObjectName("radioButton_3")
+        self.verticalLayout_45.addWidget(self.radioButton_3)
+        self.radioButton_6 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_8)
+        self.radioButton_6.setObjectName("radioButton_6")
+        self.verticalLayout_45.addWidget(self.radioButton_6)
+        self.radioButton_2 = QtWidgets.QRadioButton(self.scrollAreaWidgetContents_8)
+        self.radioButton_2.setObjectName("radioButton_2")
+        self.verticalLayout_45.addWidget(self.radioButton_2)
+        self.scrollArea_4.setWidget(self.scrollAreaWidgetContents_8)
+        self.verticalLayout_44.addWidget(self.scrollArea_4)
+        self.verticalLayout_29.addWidget(self.widget_3)
         self.DateScrollArea = QtWidgets.QScrollArea(self.widget_32)
         self.DateScrollArea.setStyleSheet("QScrollArea{\n"
 "    border-style:none;\n"
@@ -3045,6 +3118,12 @@ class Ui_MainWindow(object):
         self.SelectLabel.setText(_translate("MainWindow", "Select"))
         self.OptionsLabel.setText(_translate("MainWindow", "Options"))
         self.SelectDatelabel.setText(_translate("MainWindow", "Mandatory*"))
+        self.radioButton.setText(_translate("MainWindow", "RadioButton"))
+        self.radioButton_4.setText(_translate("MainWindow", "RadioButton"))
+        self.radioButton_5.setText(_translate("MainWindow", "RadioButton"))
+        self.radioButton_3.setText(_translate("MainWindow", "RadioButton"))
+        self.radioButton_6.setText(_translate("MainWindow", "RadioButton"))
+        self.radioButton_2.setText(_translate("MainWindow", "RadioButton"))
         self.DateRadioButton1.setText(_translate("MainWindow", "RadioButton"))
         self.DateRadioButton5.setText(_translate("MainWindow", "RadioButton"))
         self.DateRadioButton3.setText(_translate("MainWindow", "RadioButton"))
