@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1199, 1130)
+        MainWindow.resize(1094, 661)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Bi.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -359,7 +359,7 @@ class Ui_MainWindow(object):
 "}")
         self.toolBox.setObjectName("toolBox")
         self.UtilitiesPage = QtWidgets.QWidget()
-        self.UtilitiesPage.setGeometry(QtCore.QRect(0, 0, 232, 870))
+        self.UtilitiesPage.setGeometry(QtCore.QRect(0, 0, 211, 401))
         self.UtilitiesPage.setObjectName("UtilitiesPage")
         self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.UtilitiesPage)
         self.verticalLayout_10.setContentsMargins(2, 2, 2, 2)
@@ -602,7 +602,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addWidget(self.widget_14)
         self.toolBox.addItem(self.UtilitiesPage, "")
         self.StandardSQLPage = QtWidgets.QWidget()
-        self.StandardSQLPage.setGeometry(QtCore.QRect(0, 0, 232, 870))
+        self.StandardSQLPage.setGeometry(QtCore.QRect(0, 0, 211, 401))
         self.StandardSQLPage.setObjectName("StandardSQLPage")
         self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.StandardSQLPage)
         self.verticalLayout_11.setContentsMargins(2, 2, 2, 2)
@@ -643,7 +643,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.addWidget(self.widget_15)
         self.toolBox.addItem(self.StandardSQLPage, "")
         self.UserSQLPage = QtWidgets.QWidget()
-        self.UserSQLPage.setGeometry(QtCore.QRect(0, 0, 232, 870))
+        self.UserSQLPage.setGeometry(QtCore.QRect(0, 0, 211, 401))
         self.UserSQLPage.setObjectName("UserSQLPage")
         self.verticalLayout_51 = QtWidgets.QVBoxLayout(self.UserSQLPage)
         self.verticalLayout_51.setContentsMargins(2, 2, 2, 2)
@@ -684,7 +684,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_51.addWidget(self.widget_46)
         self.toolBox.addItem(self.UserSQLPage, "")
         self.PublicSQLPage = QtWidgets.QWidget()
-        self.PublicSQLPage.setGeometry(QtCore.QRect(0, 0, 232, 870))
+        self.PublicSQLPage.setGeometry(QtCore.QRect(0, 0, 211, 401))
         self.PublicSQLPage.setObjectName("PublicSQLPage")
         self.verticalLayout_37 = QtWidgets.QVBoxLayout(self.PublicSQLPage)
         self.verticalLayout_37.setContentsMargins(2, 2, 2, 2)
@@ -983,7 +983,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 175, 910))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 175, 742))
         self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
         self.verticalLayout_25 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_3)
         self.verticalLayout_25.setContentsMargins(2, 2, 2, 2)
@@ -1017,6 +1017,69 @@ class Ui_MainWindow(object):
 "    }")
         self.SelectDatelabel.setObjectName("SelectDatelabel")
         self.verticalLayout_29.addWidget(self.SelectDatelabel)
+        self.DateScrollArea = QtWidgets.QScrollArea(self.widget_32)
+        self.DateScrollArea.setStyleSheet("QScrollArea{\n"
+"    border-style:none;\n"
+"}\n"
+"QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background-color: rgb(42, 38, 62); /* Set your desired background color */\n"
+"    width: 10px; /* Set the width of the vertical scrollbar */\n"
+"    margin: 0px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical {\n"
+"    background-color: rgb(12, 54, 108); /* Set the background color of the scrollbar handle */\n"
+"    min-height: 20px; /* Set the minimum height of the scrollbar handle */\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\n"
+"    background-color: transparent;\n"
+"}\n"
+"\n"
+"QScrollBar:horizontal {\n"
+"    border: none;\n"
+"    background-color: #F0F0F0; /* Set your desired background color */\n"
+"    height: 10px; /* Set the height of the horizontal scrollbar */\n"
+"    margin: 0px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:horizontal {\n"
+"    background-color: rgb(73, 66, 108); /* Set the background color of the scrollbar handle */\n"
+"    min-width: 20px; /* Set the minimum width of the scrollbar handle */\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,\n"
+"QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {\n"
+"    background-color: transparent;\n"
+"}")
+        self.DateScrollArea.setWidgetResizable(True)
+        self.DateScrollArea.setObjectName("DateScrollArea")
+        self.DatescrollAreaWidgetContents = QtWidgets.QWidget()
+        self.DatescrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 123, 172))
+        self.DatescrollAreaWidgetContents.setObjectName("DatescrollAreaWidgetContents")
+        self.verticalLayout_41 = QtWidgets.QVBoxLayout(self.DatescrollAreaWidgetContents)
+        self.verticalLayout_41.setContentsMargins(2, 2, 2, 2)
+        self.verticalLayout_41.setSpacing(2)
+        self.verticalLayout_41.setObjectName("verticalLayout_41")
+        self.DateRadioButton1 = QtWidgets.QRadioButton(self.DatescrollAreaWidgetContents)
+        self.DateRadioButton1.setObjectName("DateRadioButton1")
+        self.verticalLayout_41.addWidget(self.DateRadioButton1)
+        self.DateRadioButton5 = QtWidgets.QRadioButton(self.DatescrollAreaWidgetContents)
+        self.DateRadioButton5.setObjectName("DateRadioButton5")
+        self.verticalLayout_41.addWidget(self.DateRadioButton5)
+        self.DateRadioButton3 = QtWidgets.QRadioButton(self.DatescrollAreaWidgetContents)
+        self.DateRadioButton3.setObjectName("DateRadioButton3")
+        self.verticalLayout_41.addWidget(self.DateRadioButton3)
+        self.DateRadioButton2 = QtWidgets.QRadioButton(self.DatescrollAreaWidgetContents)
+        self.DateRadioButton2.setObjectName("DateRadioButton2")
+        self.verticalLayout_41.addWidget(self.DateRadioButton2)
+        self.DateRadioButton4 = QtWidgets.QRadioButton(self.DatescrollAreaWidgetContents)
+        self.DateRadioButton4.setObjectName("DateRadioButton4")
+        self.verticalLayout_41.addWidget(self.DateRadioButton4)
+        self.DateScrollArea.setWidget(self.DatescrollAreaWidgetContents)
+        self.verticalLayout_29.addWidget(self.DateScrollArea)
         self.SelectDateButton = QtWidgets.QPushButton(self.widget_32)
         self.SelectDateButton.setStyleSheet("QPushButton{\n"
 "    /*background-image: url(:/whiteIcons/featherwhite/calendar.svg);\n"
@@ -1406,7 +1469,7 @@ class Ui_MainWindow(object):
 "}")
         self.toolBox_2.setObjectName("toolBox_2")
         self.PreLoadedFiltersPage = QtWidgets.QWidget()
-        self.PreLoadedFiltersPage.setGeometry(QtCore.QRect(0, 0, 236, 620))
+        self.PreLoadedFiltersPage.setGeometry(QtCore.QRect(0, 0, 205, 248))
         self.PreLoadedFiltersPage.setObjectName("PreLoadedFiltersPage")
         self.verticalLayout_22 = QtWidgets.QVBoxLayout(self.PreLoadedFiltersPage)
         self.verticalLayout_22.setContentsMargins(1, 1, 1, 1)
@@ -1461,7 +1524,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 220, 1210))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 189, 1210))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_16.setObjectName("verticalLayout_16")
@@ -1682,7 +1745,7 @@ class Ui_MainWindow(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollArea_3.setObjectName("scrollArea_3")
         self.scrollAreaWidgetContents_4 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_4.setGeometry(QtCore.QRect(0, -15, 184, 482))
+        self.scrollAreaWidgetContents_4.setGeometry(QtCore.QRect(0, 0, 153, 482))
         self.scrollAreaWidgetContents_4.setObjectName("scrollAreaWidgetContents_4")
         self.verticalLayout_40 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_4)
         self.verticalLayout_40.setContentsMargins(2, 2, 2, 2)
@@ -2265,7 +2328,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_22.addWidget(self.widget_27)
         self.toolBox_2.addItem(self.PreLoadedFiltersPage, "")
         self.AreaSpecificFiltersPage = QtWidgets.QWidget()
-        self.AreaSpecificFiltersPage.setGeometry(QtCore.QRect(0, 0, 236, 620))
+        self.AreaSpecificFiltersPage.setGeometry(QtCore.QRect(0, 0, 184, 211))
         self.AreaSpecificFiltersPage.setObjectName("AreaSpecificFiltersPage")
         self.verticalLayout_52 = QtWidgets.QVBoxLayout(self.AreaSpecificFiltersPage)
         self.verticalLayout_52.setContentsMargins(2, 2, 2, 2)
@@ -2326,7 +2389,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_52.addWidget(self.AreaSpecificWidget)
         self.toolBox_2.addItem(self.AreaSpecificFiltersPage, "")
         self.CustomFiltersPage = QtWidgets.QWidget()
-        self.CustomFiltersPage.setGeometry(QtCore.QRect(0, 0, 236, 620))
+        self.CustomFiltersPage.setGeometry(QtCore.QRect(0, 0, 184, 315))
         self.CustomFiltersPage.setObjectName("CustomFiltersPage")
         self.verticalLayout_36 = QtWidgets.QVBoxLayout(self.CustomFiltersPage)
         self.verticalLayout_36.setContentsMargins(2, 2, 2, 2)
@@ -2938,7 +3001,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.toolBox.setCurrentIndex(1)
         self.tabWidget.setCurrentIndex(0)
-        self.toolBox_2.setCurrentIndex(1)
+        self.toolBox_2.setCurrentIndex(0)
         self.SideBarButton.clicked.connect(self.SideBarWidget.hide) # type: ignore
         self.ShowSQLButton.clicked.connect(self.ToolFiltersWidget.hide) # type: ignore
         self.ShowSQLButton.clicked.connect(self.ToolSQLTextWidget.show) # type: ignore
@@ -2982,6 +3045,11 @@ class Ui_MainWindow(object):
         self.SelectLabel.setText(_translate("MainWindow", "Select"))
         self.OptionsLabel.setText(_translate("MainWindow", "Options"))
         self.SelectDatelabel.setText(_translate("MainWindow", "Mandatory*"))
+        self.DateRadioButton1.setText(_translate("MainWindow", "RadioButton"))
+        self.DateRadioButton5.setText(_translate("MainWindow", "RadioButton"))
+        self.DateRadioButton3.setText(_translate("MainWindow", "RadioButton"))
+        self.DateRadioButton2.setText(_translate("MainWindow", "RadioButton"))
+        self.DateRadioButton4.setText(_translate("MainWindow", "RadioButton"))
         self.SelectDateButton.setToolTip(_translate("MainWindow", "<html><head/><body><p>Select date filter for query</p></body></html>"))
         self.SelectDateButton.setText(_translate("MainWindow", "Select Date"))
         self.label_12.setText(_translate("MainWindow", "About Filters"))
