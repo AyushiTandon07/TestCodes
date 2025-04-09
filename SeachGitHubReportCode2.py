@@ -4,6 +4,8 @@ import threading
 import subprocess
 import fnmatch
 import re
+import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 try:
     from PyQt5.QtWidgets import (
         QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QTableWidget, QTableWidgetItem, QLabel, QHBoxLayout, QMessageBox, QTextEdit
@@ -13,7 +15,6 @@ except ModuleNotFoundError:
     print("Error: PyQt5 module is not installed. Please install it using 'pip install PyQt5'")
     sys.exit(1)
 
-# Search Directory
 
 REPO_URL = "https://github.com/AyushiTandon07/TestCodes.git"  # Replace with actual repository
 CLONE_DIR = "C:\\Users\\ayushit\\Documents\\Python\\Cloned_DIR"  # Directory to clone the repo
@@ -32,6 +33,7 @@ class GitHubSearchApp(QWidget):
 
         # Search Bar & Button
         search_layout = QHBoxLayout()
+        # Search Directory
         self.search_input = QLineEdit(self)
         self.search_input.setPlaceholderText("Enter search query...")
         self.search_button = QPushButton("Search", self)
@@ -86,11 +88,6 @@ class GitHubSearchApp(QWidget):
 
         try:
             self.log_status(f"Cloning repository into {self.CLONE_DIR}...")
-            # result = subprocess.run(["git", "clone", self.REPO_URL, self.CLONE_DIR], check=True, capture_output=True,
-            #                         text=True)
-            # self.log_status(f"Git Output: {result.stdout}")
-            # if result.stderr:
-            #     self.log_status(f"Git Error: {result.stderr}")
             os.system('git clone ' + self.REPO_URL + ' ' + self.CLONE_DIR)
             if os.path.exists(self.CLONE_DIR) and os.listdir(self.CLONE_DIR):
                 self.log_status("Repository cloned successfully.")
@@ -99,6 +96,23 @@ class GitHubSearchApp(QWidget):
         except subprocess.CalledProcessError as e:
             self.log_status(f"Error cloning repository: {e.stderr}")
             self.show_error_message(f"Error cloning repository: {e.stderr}")
+
+    def search_file(self,file_path, query, pattern):
+        matches = []
+        try:
+            # with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                # for line in f:
+                #     if pattern.search(line):  # Check if line matches the regex pattern
+                #         matches.append((file_path, line.strip()))
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                for line_num, line in enumerate(f, start=1):  # Include line number in case we need to debug
+                    line = line.strip()  # Remove leading/trailing whitespace
+                    if pattern.search(line):  # Check if line matches the regex pattern
+                        # Print for debugging to see what's being matched
+                        print(f"Match found in {file_path} on line {line_num}: {line}")
+                        matches.append((file_path, line.strip(), line_num))
+        except Exception as e:
+            print(f"Error reading file {file_path}: {str(e)}")
 
     def start_search(self):
         self.log_status("Starting search...")
@@ -110,20 +124,31 @@ class GitHubSearchApp(QWidget):
             self.log_status("Search query is empty.")
             return
 
+        # Compile the pattern with case-insensitive matching
+        # pattern = re.compile(f".*{query}.*", re.IGNORECASE)
+        pattern = re.compile(re.escape(query), re.IGNORECASE)
+
         matches = []
-        # Compile regex for case-insensitive search (LIKE '%query%')
-        pattern = re.compile(rf".*{re.escape(query)}.*", re.IGNORECASE)
-
         self.log_status("Searching in repository files...")
-        for root, _, files in os.walk(self.CLONE_DIR):
-            for file in fnmatch.filter(files, "*.py"):  # Searching only Python files, modify if needed
-                file_path = os.path.join(root, file)
-                self.log_status(f"Checking file: {file_path}")
 
-                with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-                    for line in f:
-                        if pattern.search(line):
-                            matches.append((file, line.strip()))
+        # Use ThreadPoolExecutor to search files concurrently
+        with ThreadPoolExecutor() as executor:
+            futures = []
+
+            # Walk through the repo directory
+            for root, _, files in os.walk(self.CLONE_DIR):
+                for file in fnmatch.filter(files, "*.py"):  # Searching only Python files, modify if needed
+                    file_path = os.path.join(root, file)
+                    self.log_status(f"Checking file: {file_path}")
+                    # Submit the search task to the executor
+                    future = executor.submit(self.search_file, file_path, query, pattern)
+                    futures.append(future)
+
+            # Wait for all futures to complete and collect results
+            for future in futures:
+                result = future.result()  # Get the result from the future
+                if result:  # Check if the result is not None
+                    matches.extend(result)  # Add matches to the list
 
         self.log_status("Search completed.")
         self.display_results(matches)
