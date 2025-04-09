@@ -1422,26 +1422,32 @@ class SearchWindowsRepositoryThread(QThread):
         self.WriteOutputResultsInFile(self.result_directory)
         self.finished.emit(self.results)
 
+    def PathCorrection(self, path):
+        path = os.path.abspath(path)
+        if os.name == 'nt' and not path.startswith('\\\\?\\'):
+            return '\\\\?\\' + path
+        return path
 
     def scan_directory(self, path, extensionsValues):
         self.progress.emit('Scanning Directories to Search In !!')
         print("inside scan_directory")
         with os.scandir(path) as entries:
             for entry in entries:
-                print(os.path.normpath(entry.path))
+                file_path = self.PathCorrection(entry.path)
+                print(file_path)
                 # print(type(extensionsValues))
                 if entry.is_file() and entry.name.endswith(extensionsValues):
                     if entry.name.startswith("~$"):                 # to add ~ press shift + tilde sign
-                        self.hidden_files.append(os.path.normpath(entry.path))
-                    elif os.path.getsize(os.path.normpath(entry.path)) > 100 * 1024 * 1024:  # 100MB   i.e. 100000 kb  1 kb = 1024 bytes , 1 MB= 1024 kb = 1024*1024 and 100 mb = 100 * 1024 * 1024
-                        self.oversized_files.append(os.path.normpath(entry.path))
+                        self.hidden_files.append(file_path)
+                    elif os.path.getsize(file_path) > 100 * 1024 * 1024:  # 100MB   i.e. 100000 kb  1 kb = 1024 bytes , 1 MB= 1024 kb = 1024*1024 and 100 mb = 100 * 1024 * 1024
+                        self.oversized_files.append(file_path)
                     else:
-                        self.searchable_files.append(os.path.normpath(entry.path))
+                        self.searchable_files.append(file_path)
                 elif entry.is_dir():
                     if any(skip_word in entry.name.lower() for skip_word in self.skip_dirs):                # we don't want to search in decommissioned or backup directories
-                        self.skipped_dirs.append(os.path.abspath(os.path.normpath(entry.path)))                           # Log skipped directory
+                        self.skipped_dirs.append(os.path.abspath(file_path))                           # Log skipped directory
                         continue
-                    self.scan_directory(os.path.normpath(entry.path), extensionsValues)
+                    self.scan_directory(file_path), extensionsValues)
 
 
     def search_in_file(self, files):
@@ -1480,17 +1486,17 @@ class SearchWindowsRepositoryThread(QThread):
                 file.write(line + "\n")
 
             if self.unread_files:
-                file.write("\n----- Unable to Open Files: Check Manually -------\n")
+                file.write("\n----- Unable to Open Files (could be because the file is password protected or encrypted) so Check Manually -------\n")
                 for i, unread in enumerate(self.unread_files):
                     file.write(f"{i} - {unread}\n")
 
             if self.oversized_files:
-                file.write("\n----- Files Skipped (Over 100MB) -------\n")
+                file.write("\n----- Files Skipped As They Were Over 100MB so Check Manually -------\n")
                 for i, big_file in enumerate(self.oversized_files):
                     file.write(f"{i} - {big_file}\n")
 
             if self.skipped_dirs:
-                file.write("\n----- Skipped Folders (Decommissioned/Backup/etc.) -------\n")
+                file.write("\n----- Skipped Folders (Decommissioned/Backup/etc.) so Check Manually -------\n")
                 for i, folder in enumerate(self.skipped_dirs, 1):
                     file.write(f"{i} - {folder}\n")
 
