@@ -5,52 +5,6 @@ from PyQt6.QtCore import QPropertyAnimation, Qt, QMetaObject, QSize, QRect, QEas
 from PyQt6.QtGui import QPixmap, QPainter, QIcon, QImage, QPainterPath, QStandardItemModel, QStandardItem
 
 
-# class CheckableComboBox(QComboBox):
-#     ItemClicked = pyqtSignal()
-#
-#     def __init__(self, parent= None):
-#         super().__init__(parent)
-#
-#         # self.view().pressed.connect(self.HandleItemPressed)
-#         self.addItem("All")
-#         # self.addItems(["All",".sql", ".py", ".txt", ".xlsx"])
-#         self.view().installEventFilter(self)
-#
-#         # model = QStandardItemModel(self)
-#         # self.setModel(model)
-#         # for text in ["Apple", "Banana", "Cherry"]:
-#         #     item = QStandardItem(text)
-#         #     item.setCheckable(True)
-#         #     item.setCheckState(Qt.CheckState.Checked)
-#         #     model.appendRow(item)
-#
-#
-#          # self.model= self.model()            #The model is responsible for storing and managing the data.
-#         # self.view = self.view()             #The view determines how the data appears to the user. ex: comboBox.view().setMinimumWidth(200)
-#
-#         # self.setItemChecked()
-#
-#     def eventFilter(self,watched, event):
-#
-#
-#
-#
-#     def setItemChecked(self):
-#         model = self.model()
-#         for i in range(model.rowCount()):
-#             item = model.item(i)
-#
-#             if item:
-#                 item.setCheckable(True)  # Make it checkable
-#                 item.setCheckState(Qt.CheckState.Checked)
-#
-#         # def HandleItemPressed(self, index):
-#     #     item = self.model.index(0)
-#     #     if self.model.index(0).isCh
-#
-
-
-
 class CheckableListWidget(QListWidget):
     raiseComplete = pyqtSignal(int)
 

@@ -2,21 +2,21 @@ import sys, os, re, openpyxl
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QFrame, QLabel, QSizePolicy, \
     QHBoxLayout, QGraphicsOpacityEffect, QScrollArea, QLineEdit, QTextEdit, QSpacerItem, QGridLayout, QRadioButton, \
     QListWidget, QListWidgetItem, QAbstractScrollArea, QComboBox, QCheckBox, QFileDialog
-from PyQt6.QtCore import QPropertyAnimation, Qt, QMetaObject, QSize, QRect, QEasingCurve, QThread, pyqtSignal
+from PyQt6.QtCore import QPropertyAnimation, Qt, QMetaObject, QSize, QRect, QEasingCurve, QThread, pyqtSignal, QVariantAnimation, QAbstractAnimation
 from PyQt6.QtGui import QPixmap, QPainter, QIcon, QImage,\
-    QPainterPath
+    QPainterPath, QColor
 import required as rq
 
 # DSA Report Repo size: 1 TB
 
-
 # global variables
 ClickedRadioButton = [[3, "Both"]]
-
 
 class AnimatedDropdown(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        self.dots = 0
 
         self.setWindowTitle("Animated Dropdown Menu")
         self.setStyleSheet("background-color: rgb(212, 239, 223);")
@@ -206,12 +206,11 @@ class AnimatedDropdown(QMainWindow):
         self.ChildWidget2FormWidget.setObjectName("ChildWidget2FormWidget")
         self.ChildWidget2FormWidget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         self.ChildWidget2FormWidget.setMaximumWidth(800)
-        # self.ChildWidget2FormWidget.setFixedHeight(830)
         self.ChildWidget2Layout.addWidget(self.ChildWidget2FormWidget)
 
         # Vertical Layout for form items
         self.ChildWidget2FormWidgetLayout = QVBoxLayout(self.ChildWidget2FormWidget)
-        self.ChildWidget2FormWidgetLayout.setContentsMargins(8, 5, 6, 4)  # left , top , right , bottom
+        # self.ChildWidget2FormWidgetLayout.setContentsMargins(8, 5, 6, 4)  # left , top , right , bottom
         self.ChildWidget2FormWidgetLayout.setSpacing(10)
         self.ChildWidget2FormWidget.setLayout(self.ChildWidget2FormWidgetLayout)
 
@@ -337,17 +336,12 @@ class AnimatedDropdown(QMainWindow):
         self.WindowsExtensionComboBox.setObjectName("WindowsExtensionComboBox")
         self.WindowsExtensionComboBoxScrollbar = self.WindowsExtensionComboBox.verticalScrollBar()
 
-        self.WindowsExtensionComboboxLabel2 = QLabel(self.WindowsComboboxWidget)
-        self.WindowsExtensionComboboxLabel2.setObjectName("WindowsExtensionComboboxLabel2")
-
-
         self.WindowsComboboxLayout.addWidget(self.WindowsExtensionComboboxLabel, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
-        self.WindowsComboboxLayout.addWidget(self.WindowsExtensionComboBox, alignment= Qt.AlignmentFlag.AlignHCenter)
-        self.WindowsComboboxLayout.addWidget(self.WindowsExtensionComboboxLabel2)
+        self.WindowsComboboxLayout.addWidget(self.WindowsExtensionComboBox, alignment=Qt.AlignmentFlag.AlignHCenter)
 
         self.WindowsComboboxLayout.setStretch(0,2)
-        self.WindowsComboboxLayout.setStretch(1,7)
-        self.WindowsComboboxLayout.setStretch(2,1)
+        self.WindowsComboboxLayout.setStretch(1,8)
+        # self.WindowsComboboxLayout.setStretch(2,1)
 
 
         # Addinf items in Windows Path Widget Layout
@@ -437,19 +431,13 @@ class AnimatedDropdown(QMainWindow):
         self.StatusLabel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         self.StatusLabel.setVisible(True)
 
-        # Adding blank widget as a placeholder after Radio Buttons
-        # self.blankWidget = QWidget(self.ChildWidget2FormWidget)
-        # self.blankWidget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        # self.blankWidget.setObjectName("blankWidget")
-        #
-        # # Layout of Child Widget 1 for mark reports done button
-        # self.blankLayout = QHBoxLayout(self.blankWidget)
-        # self.blankLayout.setContentsMargins(0, 0, 0, 0)
-        # self.blankLayout.setSpacing(0)
-        # self.blankWidget.setLayout(self.blankLayout)
-        #
-        # self.blankLabel = QLabel(self.blankWidget)
-        # self.blankLayout.addWidget(self.blankLabel)
+        # Label to show processing status
+        self.ProcessingStatusLabel = QLabel(self.ChildWidget2FormWidget)
+        self.ProcessingStatusLabel.setObjectName("ProcessingStatusLabel")
+        self.ProcessingStatusLabel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        # self.ProcessingStatusLabel.setVisible(True)
+        self.ProcessingStatusLabel.setMinimumHeight(30)
+        self.ProcessingStatusLabel.setText("Processing")
 
 
         # Adding items in Form Widget inside Child Widget 2
@@ -457,6 +445,7 @@ class AnimatedDropdown(QMainWindow):
         self.ChildWidget2FormWidgetLayout.addWidget(self.ChildWidget2ListWidget)                # Radio Button List widget
         self.ChildWidget2FormWidgetLayout.addWidget(self.WindowsPathWidget)                     # Windows Path widget
         self.ChildWidget2FormWidgetLayout.addWidget(self.StatusLabel)
+        self.ChildWidget2FormWidgetLayout.addWidget(self.ProcessingStatusLabel)
         self.ChildWidget2FormWidgetLayout.addLayout(self.RepositorySearchButtonLayout)
 
 
@@ -519,6 +508,15 @@ class AnimatedDropdown(QMainWindow):
         self.animation.setDuration(400)  # Animation time in milliseconds
         self.menu_expanded = False  # Menu state flag
 
+
+
+
+
+
+
+        self.LoadExtensionList()
+
+
         # Button Clicked functions
         self.toggle_button.clicked.connect(self.toggle_menu)
         self.button1.clicked.connect(self.displayText)
@@ -537,7 +535,7 @@ class AnimatedDropdown(QMainWindow):
         self.RadioButton3.clicked.connect(lambda: self.RadioButtonClicked(int(3)))
 
         self.RepositorySearchButton.clicked.connect(self.SearchReports)
-        self.LoadExtensionList()
+
 
         self.StringSearchInput.textChanged.connect(self.SearchInputTextChanged)
 
@@ -547,6 +545,7 @@ class AnimatedDropdown(QMainWindow):
         self.WindowsResulFileInput.textChanged.connect(self.WindowsResultFileInputTextChanged)
         self.WindowsResultFilePathButton.clicked.connect(self.ChooseWindowsResultSaveFilePath)
 
+        # self.ProcessingStatusLabel.
 
 
 
@@ -853,12 +852,12 @@ class AnimatedDropdown(QMainWindow):
                                                             "    font-size:14px;\n"
                                                             "    font-family: Georgia, serif;\n"
                                                             "}")
-        self.WindowsExtensionComboboxLabel2.setStyleSheet("QLabel{\n"
-                                                          "background-color: transparent;"
-                                                         # "    color: rgb(89, 50, 25);\n"
-                                                         # "    font-size:14px;\n"
-                                                         # "    font-family: Georgia, serif;\n"
-                                                         "}")
+        # self.WindowsExtensionComboboxLabel2.setStyleSheet("QLabel{\n"
+        #                                                   "background-color: transparent;"
+        #                                                  # "    color: rgb(89, 50, 25);\n"
+        #                                                  # "    font-size:14px;\n"
+        #                                                  # "    font-family: Georgia, serif;\n"
+        #                                                  "}")
 
         self.WindowsExtensionComboBox.setStyleSheet("QListWidget{\n"
                                                        "color: rgb(89, 50, 25); \n"
@@ -982,6 +981,29 @@ class AnimatedDropdown(QMainWindow):
                                     "border-radius: 15px;\n"
                                     "}")
 
+        self.ProcessingStatusLabel.setStyleSheet("QLabel{\n"
+                                       "    background-color: transparent;\n"
+                                       "    color: rgb(89, 50, 25);\n"
+                                       "    font-size:16px;\n"
+                                       "    font-family: Georgia, serif;\n"
+                                       "    padding:2px;\n"
+                                       "}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # Retranslate UI Function Call
         self.retranslateUi()
@@ -1008,6 +1030,7 @@ class AnimatedDropdown(QMainWindow):
         self.WindowsFilePathButton.setToolTip("Choose File Path")
         self.WindowsResultFileLabel.setText("Choose the Windows Directory  \nto Save the Result File:")
         self.WindowsResultFilePathButton.setToolTip("Choose File Path")
+        self.ProcessingStatusLabel.setText("")
 
 
 
@@ -1139,17 +1162,23 @@ class AnimatedDropdown(QMainWindow):
             if self.WindowsPathWidget.height() == 0:
                 #  Widget expanding for the fist time
                 self.StatusLabel.setText("")
+                # self.StringSearchInput.setText("")
+                self.WindowsPathSearchInput.setText("")
+                self.WindowsResulFileInput.setText("")
+
                 self.ResettingInputFieldsStyleSheet(True, [1])
                 self.WindowsPathWidget.setMaximumHeight(250)
                 self.WindowsPathWidget.updateGeometry()
-                self.WindowsComboboxWidget.setMinimumHeight(90)
+                # self.WindowsComboboxWidget.setMinimumHeight(90)
             else:
                 #  Widget already expanded
                 if len(self.StatusLabel.text()) > 0:             # There is an error message already
                     self.StatusLabel.setVisible(True)
         else:
             self.StatusLabel.setText("")
+            self.ProcessingStatusLabel.setText("")
             self.ResettingInputFieldsStyleSheet(True, [1])
+
             if self.WindowsPathWidget.height() > 0:
                 self.WindowsPathWidget.setMaximumHeight(0)
                 self.WindowsPathSearchInput.setText("")
@@ -1158,21 +1187,14 @@ class AnimatedDropdown(QMainWindow):
 
     # Search Windows Repository function
     def SearchWindowsRepository(self):
-        SearchString = self.StringSearchInput.text()
-        SearchDirectory = self.WindowsPathSearchInput.text()
+        SearchString = self.StringSearchInput.text().strip()
+        SearchDirectory = self.WindowsPathSearchInput.text().strip()
         SearchFileTypesExtensions = self.WindowsExtensionComboBox.ReturnCheckedValues()
-        ResultDirectory = self.WindowsResulFileInput.text()
-        # print("Windows Dir Thread Calling")
+        ResultDirectory = self.WindowsResulFileInput.text().strip()
         self.thread = SearchWindowsRepositoryThread(SearchDirectory, SearchString, SearchFileTypesExtensions, ResultDirectory )
-        self.thread.progress.connect(self.update_status_label)
-        self.thread.finished.connect(self.show_results)
+        self.thread.progress.connect(self.UpdateProcessingLabelText)
+        self.thread.finished.connect(self.UpdateProcessingLabelTextFinished)
         self.thread.start()
-
-    def update_status_label(self, message):
-        self.StatusLabel.setText(message)
-
-    def show_results(self, results):
-        self.StatusLabel.setText(f"Search complete. {len(results)} results found.")
 
 
     # Search GitHub Repository function
@@ -1235,7 +1257,6 @@ class AnimatedDropdown(QMainWindow):
                 if len(self.WindowsResulFileInput.text()) > 0:
                     # SearchDir = self.WindowsResulFileInput.text()
                     SearchDir = os.path.dirname(self.WindowsResulFileInput.text())
-                    print(SearchDir)
                     # Checking if Directory exists
                     if not (os.path.isdir(SearchDir)):
                         print("Save Folder does not exist")
@@ -1329,10 +1350,7 @@ class AnimatedDropdown(QMainWindow):
         folder_path = QFileDialog.getSaveFileName(self, "Select Folder", "" , "Text Files (*.txt)")        # Dialog Title, Default Directory, File type to save result
         # print(folder_path)            # Folder_path is a Tuple: ('C:/Users/ayushit/Pictures/Sweaters/SaveFile.txt', 'Text Files (*.txt)')
         fileName = folder_path[0]
-        print('fileName:', fileName)
-        print('folderPath:', folder_path)
         base_name = os.path.basename(fileName)
-        print('BaseName:', base_name)
         if folder_path != "":
             if fileName.split('.')[-1].lower() == 'txt':
                 self.WindowsResulFileInput.setText(fileName)
@@ -1390,12 +1408,68 @@ class AnimatedDropdown(QMainWindow):
                     self.WindowsResulFileInput.setStyleSheet("border: 0.5px solid red; background-color: rgb(117,178,165);")
 
 
+    # Updating Processing label Text
+    def UpdateProcessingLabelText(self, message: str):
+
+        self.ProcessingLabelAnimation()
+        self.ProcessingStatusLabel.setText(str(message))
+
+
+    def ProcessingLabelAnimation(self):
+        if hasattr(self, 'color_anim') and self.color_anim  and self.color_anim.state() == QAbstractAnimation.State.Running:
+            return  # Already running
+
+        # Custom Color Pulse Animation
+        self.color_anim = QVariantAnimation(self)
+        self.color_anim.setDuration(1500)  # 1.5 sec
+        self.color_anim.setStartValue(QColor(150, 150, 150))  # Light grey
+        self.color_anim.setEndValue(QColor(89, 50, 25))  # Black text rgb(89, 50, 25)
+        self.color_anim.setEasingCurve(QEasingCurve.Type.InOutQuad)
+        self.color_anim.setLoopCount(-1)
+
+        self.color_anim.valueChanged.connect(self.UpdateProcessingLabelColor)       # color_anim will generate a value of color every 1.5 secodns and will pass it to UpdateProcessingLabelColor function
+        # Manually apply the starting color immediately
+        self.UpdateProcessingLabelColor(self.color_anim.startValue())
+        self.color_anim.start()
+
+    def UpdateProcessingLabelColor(self, color):
+        # Update the label's style dynamically
+        color_name = color.name()                                                   # Get "#RRGGBB"
+        self.ProcessingStatusLabel.setStyleSheet(f"color: {color_name};")
+
+    def UpdateProcessingLabelTextFinished(self, message: str):
+        # print("inside finished:" + str(message))
+        self.ProcessingStatusLabel.setText(str(message))
+
+        if hasattr(self, 'color_anim'):
+            # print("inside has attr , state : ",self.color_anim.state())
+            try:
+                self.color_anim.valueChanged.disconnect(self.UpdateProcessingLabelColor)
+                # print("After disconnect , state : ", self.color_anim.state())
+            except TypeError:
+                pass  # already disconnected
+
+            if self.color_anim.state() == QAbstractAnimation.State.Running:
+                self.color_anim.stop()
+            # print("After calling stop, state : ",self.color_anim.state())
+
+            from PyQt6.QtCore import QTimer
+            QTimer.singleShot(0, self.color_anim.deleteLater)
+            self.color_anim = None
+
+        self.ProcessingStatusLabel.setStyleSheet("QLabel{\n"
+                                                 "    background-color: transparent;\n"
+                                                 "    color: rgb(89, 50, 25);\n"
+                                                 "    font-size:16px;\n"
+                                                 "    font-family: Georgia, serif;\n"
+                                                 "    padding:2px;\n"
+                                                 "}")
 
 
 # Windows Directory Search Thread
 class SearchWindowsRepositoryThread(QThread):
     progress = pyqtSignal(str)       # Emit messages to update UI
-    finished = pyqtSignal(list)      # Emit results when done
+    finished = pyqtSignal(str)      # Emit results when done
 
     def __init__(self, search_dir, search_text, ext, ResultDirectory):
         super().__init__()
@@ -1408,8 +1482,8 @@ class SearchWindowsRepositoryThread(QThread):
         self.unread_files = []
         self.oversized_files = []
         self.skipped_dirs = []
-        print(ext)
-        print(type(ext))
+        # print(ext)
+        # print(type(ext))
         self.extensions = tuple(ext)
         self.skip_dirs = ["decommissioned", "bkp", "backup", "bckp", "decommission", "decomm", "decom"]
 
@@ -1417,10 +1491,12 @@ class SearchWindowsRepositoryThread(QThread):
 
     def run(self):
         self.scan_directory(self.search_directory, self.extensions)
-        print('SearchableFileList: ', self.searchable_files)
         self.search_in_file(self.searchable_files)
         self.WriteOutputResultsInFile(self.result_directory)
-        self.finished.emit(self.results)
+        # self.finished.emit(self.results)
+        self.SearchCompleted(len(self.results))
+        # self.finished.emit(f"Search completed. {len(self.results)} results found.")
+
 
     def PathCorrection(self, path):
         path = os.path.abspath(path)
@@ -1430,12 +1506,9 @@ class SearchWindowsRepositoryThread(QThread):
 
     def scan_directory(self, path, extensionsValues):
         self.progress.emit('Scanning Directories to Search In !!')
-        print("inside scan_directory")
         with os.scandir(path) as entries:
             for entry in entries:
                 file_path = self.PathCorrection(entry.path)
-                print(file_path)
-                # print(type(extensionsValues))
                 if entry.is_file() and entry.name.endswith(extensionsValues):
                     if entry.name.startswith("~$"):                 # to add ~ press shift + tilde sign
                         self.hidden_files.append(file_path)
@@ -1447,7 +1520,7 @@ class SearchWindowsRepositoryThread(QThread):
                     if any(skip_word in entry.name.lower() for skip_word in self.skip_dirs):                # we don't want to search in decommissioned or backup directories
                         self.skipped_dirs.append(os.path.abspath(file_path))                           # Log skipped directory
                         continue
-                    self.scan_directory(file_path), extensionsValues)
+                    self.scan_directory(file_path, extensionsValues)
 
 
     def search_in_file(self, files):
@@ -1455,7 +1528,6 @@ class SearchWindowsRepositoryThread(QThread):
         for file_path in files:
             try:
                 if file_path.endswith((".sql", ".py", ".txt")):
-                    # print("Inside search_in_file function , filepath is: ", file_path)
                     with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                         for line_number, line in enumerate(f, 1):
                             if self.search_pattern.search(line):
@@ -1480,25 +1552,40 @@ class SearchWindowsRepositoryThread(QThread):
 
     def WriteOutputResultsInFile(self, result_dir):
         self.progress.emit('Searching Completed. Writing Results in Output File....')
+        # print("length of results: ", len(self.results))
         output_path = result_dir
-        with open(output_path, 'w', encoding="utf-8") as file:
-            for line in self.results:
-                file.write(line + "\n")
+        try:
+            with open(output_path, 'w', encoding="utf-8") as file:
+                for line in self.results:
+                    file.write(line + "\n")
 
-            if self.unread_files:
-                file.write("\n----- Unable to Open Files (could be because the file is password protected or encrypted) so Check Manually -------\n")
-                for i, unread in enumerate(self.unread_files):
-                    file.write(f"{i} - {unread}\n")
+                if self.unread_files:
+                    file.write("\n----- Unable to Open Files (could be because the file is password protected or encrypted) so Check Manually -------\n")
+                    for i, unread in enumerate(self.unread_files):
+                        file.write(f"{i} - {unread}\n")
 
-            if self.oversized_files:
-                file.write("\n----- Files Skipped As They Were Over 100MB so Check Manually -------\n")
-                for i, big_file in enumerate(self.oversized_files):
-                    file.write(f"{i} - {big_file}\n")
+                if self.oversized_files:
+                    file.write("\n----- Files Skipped As They Were Over 100MB so Check Manually -------\n")
+                    for i, big_file in enumerate(self.oversized_files):
+                        file.write(f"{i} - {big_file}\n")
 
-            if self.skipped_dirs:
-                file.write("\n----- Skipped Folders (Decommissioned/Backup/etc.) so Check Manually -------\n")
-                for i, folder in enumerate(self.skipped_dirs, 1):
-                    file.write(f"{i} - {folder}\n")
+                if self.skipped_dirs:
+                    file.write("\n----- Skipped Folders (Decommissioned/Backup/etc.) so Check Manually -------\n")
+                    for i, folder in enumerate(self.skipped_dirs, 1):
+                        file.write(f"{i} - {folder}\n")
+
+            # self.finished.emit(f"Search completed. {len(self.results)} results found.")
+        except Exception as e:
+            print("Error in Script.")
+            self.finished.emit("Error in Script.")
+
+
+    def SearchCompleted(self, result_val):
+        # print(type(result_val))
+        val = str(f"Search completed. {result_val} results found.")
+        # self.finished.emit(f"Search completed. {result_val} results found.")
+        # print(val)
+        self.finished.emit(str(val))
 
 
 
