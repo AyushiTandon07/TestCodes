@@ -6,11 +6,17 @@ from PyQt6.QtCore import QPropertyAnimation, Qt, QMetaObject, QSize, QRect, QEas
 from PyQt6.QtGui import QPixmap, QPainter, QIcon, QImage,\
     QPainterPath, QColor
 import required as rq
+import time
+
+
+
 
 # DSA Report Repo size: 1 TB
 
 # global variables
 ClickedRadioButton = [[3, "Both"]]
+
+
 
 class AnimatedDropdown(QMainWindow):
     def __init__(self):
@@ -553,33 +559,39 @@ class AnimatedDropdown(QMainWindow):
 
 
         # StyleSheet Properties
+
+
+        self.MainHeadingWidget.setStyleSheet("QWidget{background-color: rgb(237, 234, 222);\n"
+                                             # "border: 2px solid black;\n"
+                                             "}"
+
+                                             )
+
         self.MainHeadingLabel.setStyleSheet(
-            "QLabel {"
-            "color: rgb(0, 0, 0); /* Set your desired text color */"
-            "font-family: Georgia, serif;"
-            "font-size: 45px; /* Set your desired font size */"
-            "text-decoration: underline;"
-            "/*	border-bottom: 0.5px solid black;/*/"
-            "border: 2px solid black;"
+            "QLabel {\n"
+            "color: rgb(0, 0, 0); /* Set your desired text color */\n"
+            "font-family: Georgia, serif;\n"
+            "font-size: 45px; /* Set your desired font size */\n"
+            "text-decoration: underline;\n"
+            "/*	border-bottom: 0.5px solid black;/*/\n"
+            # "border: 2px solid black;\n"
             "}")
 
-        self.MainHeadingWidget.setStyleSheet("QWidget{background-color: rgb(237, 234, 222);}")
-
-        self.MainHeadingLabel_1.setStyleSheet("QLabel {"
-                                              "color: rgb(0, 0, 0); /* Set your desired text color */"
-                                              "font-family: Georgia, serif;"
-                                              "font-size: 45px; /* Set your desired font size */"
-                                              "/*text-decoration: underline;*/"
-                                              "/*	border-bottom: 0.5px solid black;/*/"
-                                              "border: 2px solid black;"
+        self.MainHeadingLabel_1.setStyleSheet("QLabel {\n"
+                                              "color: rgb(0, 0, 0); /* Set your desired text color */\n"
+                                              "font-family: Georgia, serif;\n"
+                                              "font-size: 45px; /* Set your desired font size */\n"
+                                              "/*text-decoration: underline;*/\n"
+                                              "/*	border-bottom: 0.5px solid black;/*/\n"
+                                              # "border: 2px solid black;\n"
                                               "}")
 
-        self.MainHeadingLabel_2.setStyleSheet("QLabel {"
-                                              "color: rgb(0, 0, 0); /* Set your desired text color */"
-                                              "font-family: Georgia, serif;"
-                                              "font-size: 45px; /* Set your desired font size */"
-                                              "text-decoration: underline;"
-                                              "/*	border-bottom: 0.5px solid black;/*/"
+        self.MainHeadingLabel_2.setStyleSheet("QLabel {\n"
+                                              "color: rgb(0, 0, 0); /* Set your desired text color */\n"
+                                              "font-family: Georgia, serif;\n"
+                                              "font-size: 45px; /* Set your desired font size */\n"
+                                              "text-decoration: underline;\n"
+                                              "/*	border-bottom: 0.5px solid black;/*/\n"
                                               "}")
 
         self.dropdown_menu.setStyleSheet("background-color: lightgray; border-radius: 5px;")
@@ -1010,7 +1022,7 @@ class AnimatedDropdown(QMainWindow):
         QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self):
-        self.MainHeadingLabel_1.setText("GNA ALL IN ONE APP")
+        self.MainHeadingLabel_1.setText("GNA-Search")
         self.MarkReportsDoneButton.setText("Mark Reports Done")
         self.SearchButton.setText("Search Reports in \nGitHub && Report Repository")
         # self.SearchButton.setText("<html><body>Search Reports<br><span style='font-size: 12px;'>(GitHub & Report Repository)</span></body></html>")
@@ -1471,6 +1483,7 @@ class SearchWindowsRepositoryThread(QThread):
     progress = pyqtSignal(str)       # Emit messages to update UI
     finished = pyqtSignal(str)      # Emit results when done
 
+
     def __init__(self, search_dir, search_text, ext, ResultDirectory):
         super().__init__()
         self.search_directory = search_dir
@@ -1486,6 +1499,7 @@ class SearchWindowsRepositoryThread(QThread):
         # print(type(ext))
         self.extensions = tuple(ext)
         self.skip_dirs = ["decommissioned", "bkp", "backup", "bckp", "decommission", "decomm", "decom"]
+        self.StartTime = time.time()
 
         self.search_pattern = re.compile(re.escape(self.search_text), re.IGNORECASE)
 
@@ -1495,7 +1509,6 @@ class SearchWindowsRepositoryThread(QThread):
         self.WriteOutputResultsInFile(self.result_directory)
         # self.finished.emit(self.results)
         self.SearchCompleted(len(self.results))
-        # self.finished.emit(f"Search completed. {len(self.results)} results found.")
 
 
     def PathCorrection(self, path):
@@ -1581,10 +1594,9 @@ class SearchWindowsRepositoryThread(QThread):
 
 
     def SearchCompleted(self, result_val):
-        # print(type(result_val))
-        val = str(f"Search completed. {result_val} results found.")
-        # self.finished.emit(f"Search completed. {result_val} results found.")
-        # print(val)
+        self.EndTime = time.time()
+        self.TimeElapsed = self.EndTime - self.StartTime
+        val = str(f"Search completed. {result_val} results found. Time Elapsed:")
         self.finished.emit(str(val))
 
 
